@@ -37,19 +37,6 @@ npm i typescript sass -D
     "scripts": {
         "start": "webpack-dev-server",
         "build": "webpack"
-    },
-    "devDependencies": {
-        "clean-webpack-plugin": "^4.0.0",
-        "css-loader": "^6.5.1",
-        "html-webpack-plugin": "^5.5.0",
-        "sass": "^1.49.0",
-        "sass-loader": "^12.4.0",
-        "style-loader": "^3.3.1",
-        "ts-loader": "^9.2.6",
-        "typescript": "^4.5.5",
-        "webpack": "^5.67.0",
-        "webpack-cli": "^4.9.1",
-        "webpack-dev-server": "^4.7.3"
     }
 }
 ```
