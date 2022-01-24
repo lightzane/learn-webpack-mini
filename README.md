@@ -12,16 +12,22 @@ This project merely has LESS **Plugins** and **configurations** in `webpack.conf
 npm i webpack webpack-cli webpack-dev-server -D
 ```
 
-### Webpack Dependencies
+### Webpack Loaders
 
 ```
-npm i typescript ts-loader sass sass-loader css-loader style-loader -D
+npm i ts-loader sass-loader css-loader style-loader -D
 ```
 
 ### Webpack Plugins
 
 ```
 npm i html-webpack-plugin clean-webpack-plugin -D
+```
+
+### Other Dependencies
+
+```
+npm i typescript sass
 ```
 
 **package.json**
@@ -46,6 +52,67 @@ npm i html-webpack-plugin clean-webpack-plugin -D
         "webpack-dev-server": "^4.7.3"
     }
 }
+```
+
+**webpack.config.json**
+
+```typescript
+const path = require('path');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+// ! to enable Reload of page when static files are changed
+// * provide a static path config for webpack-dev-server! (see package.json)
+// webpack-dev-server --static ./src/app,
+// * or provide in devServer.static = []
+
+module.exports = {
+    // ? The following 3 commented-lines are explicitly included in package.json scripts
+    // devtool: 'eval-source-map', // DEBUGGING for development -- also enable sourceMap: true in tsconfig.json
+    // devtool: 'source-map', // DEBUGGING for production  -- also enable sourceMap: true in tsconfig.json
+    // mode: 'production', // 'development' | 'production'
+    entry: ['./src/main.ts', './src/style.scss'],
+    output: {
+        filename: '[name]-[contenthash].js',
+        path: path.resolve(__dirname, 'dist'),
+    },
+    module: {
+        rules: [
+            {
+                test: /\.ts$/,
+                use: 'ts-loader',
+                exclude: /node_modules/,
+            },
+            {
+                test: /\.s[ac]ss$/,
+                use: [
+                    // Creates `style` nodes from JS strings
+                    'style-loader',
+                    // Translate CSS into CommonJS
+                    'css-loader',
+                    // Compiles Sass into CSS
+                    'sass-loader',
+                ],
+            },
+        ],
+    },
+    // ! REQUIRED if main.ts imports from other files (to prevent MODULE_NOT_FOUND error)
+    resolve: {
+        extensions: ['.ts', '.js'],
+    },
+    plugins: [
+        // to output a new index.html with injected dependencies (i.e. <scripts>)
+        new HtmlWebpackPlugin({
+            template: './src/index.html',
+        }),
+        new CleanWebpackPlugin(),
+    ],
+    devServer: {
+        port: 4200,
+        // ! to enable Reload of page when static files are changed
+        static: ['./src'],
+    },
+};
 ```
 
 |           Dependency | Description                                                                                      |
