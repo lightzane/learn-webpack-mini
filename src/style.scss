@@ -1,0 +1,23 @@
+$margin: 20px;
+$font: 'Arial';
+
+*,
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+div {
+    margin: $margin;
+}
+
+h1 {
+    font-family: $font;
+}
+
+input,
+button,
+pre {
+    font-size: $margin;
+}
