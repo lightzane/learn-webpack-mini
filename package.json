@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "Webpack using Typescript as entry point with LESS plugins and configurations",
     "scripts": {
-        "start:dev": "webpack-dev-server --mode=development --devtool=eval-source-map",
+        "start": "webpack-dev-server --mode=development --devtool=eval-source-map",
         "build": "webpack --mode=production"
     },
     "keywords": [],

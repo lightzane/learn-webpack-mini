@@ -35,7 +35,7 @@ npm i typescript sass -D
 ```json
 {
     "scripts": {
-        "start:dev": "webpack-dev-server --mode=development --devtool=eval-source-map",
+        "start": "webpack-dev-server --mode=development --devtool=eval-source-map",
         "build": "webpack --mode=production"
     }
 }
