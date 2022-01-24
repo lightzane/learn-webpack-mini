@@ -1,6 +1,6 @@
 # learn-webpack-mini
 
-![](https://img.shields.io/badge/webpack-5.67.0-lightblue) ![](https://img.shields.io/badge/vue-2.16.14-lightblue)
+![](https://img.shields.io/badge/webpack-5.67.0-lightblue) ![](https://img.shields.io/badge/vue-2.16.14-34495e)
 
 **Vue** from scratch with Webpack using Typescript as entry point.
 
