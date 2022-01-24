@@ -27,7 +27,7 @@ npm i html-webpack-plugin clean-webpack-plugin -D
 ### Other Dependencies
 
 ```
-npm i typescript sass
+npm i typescript sass -D
 ```
 
 **package.json**
