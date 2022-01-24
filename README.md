@@ -15,13 +15,13 @@ npm i webpack webpack-cli webpack-dev-server -D
 ### Webpack Loaders
 
 ```
-npm i ts-loader sass-loader css-loader style-loader -D
+npm i ts-loader sass-loader css-loader -D
 ```
 
 ### Webpack Plugins
 
 ```
-npm i html-webpack-plugin clean-webpack-plugin -D
+npm i html-webpack-plugin clean-webpack-plugin mini-css-extract-plugin -D
 ```
 
 ### Other Dependencies
@@ -47,6 +47,7 @@ npm i typescript sass -D
 const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 // ! to enable Reload of page when static files are changed
 // * provide a static path config for webpack-dev-server! (see package.json)
@@ -73,8 +74,8 @@ module.exports = {
             {
                 test: /\.s[ac]ss$/,
                 use: [
-                    // Creates `style` nodes from JS strings
-                    'style-loader',
+                    // Extracts CSS and Creates `style` nodes from JS strings
+                    MiniCssExtractPlugin.loader,
                     // Translate CSS into CommonJS
                     'css-loader',
                     // Compiles Sass into CSS
@@ -92,6 +93,9 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: './src/index.html',
         }),
+        new MiniCssExtractPlugin({
+            filename: '[name]-[contenthash].css',
+        }),
         new CleanWebpackPlugin(),
     ],
     devServer: {
@@ -99,16 +103,21 @@ module.exports = {
         // ! to enable Reload of page when static files are changed
         static: ['./src'],
     },
+    optimization: {
+        splitChunks: {
+            chunks: 'all',
+        },
+    },
 };
 ```
 
-|           Dependency | Description                                                                                      |
-| -------------------: | :----------------------------------------------------------------------------------------------- |
-|           typescript | Core dependency when writing `.ts` files                                                         |
-|            ts-loader | Compiles `.ts` files to `.js`                                                                    |
-|                 sass | Core dependency when writing `.scss` or `.sass` files                                            |
-|          sass-loader | Compiles `.scss` or `.sass` to `CSS`                                                             |
-|           css-loader | Compiles `CSS` to CommonJS                                                                       |
-|         style-loader | Injects `<style>` nodes to the HTML template                                                     |
-|  html-webpack-plugin | Generates the given HTML template and injects the `entry` point specified in `webpack.config.js` |
-| clean-webpack-plugin | Cleans the `output` directory specified in `webpack.config.js`                                   |
+|              Dependency | Description                                                                                      |
+| ----------------------: | :----------------------------------------------------------------------------------------------- |
+|              typescript | Core dependency when writing `.ts` files                                                         |
+|               ts-loader | Compiles `.ts` files to `.js`                                                                    |
+|                    sass | Core dependency when writing `.scss` or `.sass` files                                            |
+|             sass-loader | Compiles `.scss` or `.sass` to `CSS`                                                             |
+|              css-loader | Compiles `CSS` to CommonJS                                                                       |
+| mini-css-extract-plugin | Extracts `CSS` from CommonJS and injects `<style>` nodes to the HTML template                    |
+|     html-webpack-plugin | Generates the given HTML template and injects the `entry` point specified in `webpack.config.js` |
+|    clean-webpack-plugin | Cleans the `output` directory specified in `webpack.config.js`                                   |

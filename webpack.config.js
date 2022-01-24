@@ -1,6 +1,7 @@
 const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 // ! to enable Reload of page when static files are changed
 // * provide a static path config for webpack-dev-server! (see package.json)
@@ -27,8 +28,11 @@ module.exports = {
             {
                 test: /\.s[ac]ss$/,
                 use: [
-                    // Creates `style` nodes from JS strings
-                    'style-loader',
+                    // Extracts CSS and Creates `style` nodes from JS strings
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                        // options: { publicPath: '../' } // Specifies a custom public path for the external resources like images, files, etc inside CSS
+                    },
                     // Translate CSS into CommonJS
                     'css-loader',
                     // Compiles Sass into CSS
@@ -46,11 +50,20 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: './src/index.html',
         }),
+        new MiniCssExtractPlugin({
+            filename: '[name]-[contenthash].css',
+            // chunkFilename: '[id].css',
+        }),
         new CleanWebpackPlugin(),
     ],
     devServer: {
         port: 4200,
         // ! to enable Reload of page when static files are changed
         static: ['./src'],
+    },
+    optimization: {
+        splitChunks: {
+            chunks: 'all',
+        },
     },
 };
