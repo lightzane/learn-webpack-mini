@@ -53,6 +53,23 @@ npm i typescript sass -D
 npx tsc --init
 ```
 
+### Modify Typescript Configuration
+
+Modify _some_ properties in `tsconfig.json`
+
+```diff
+{
+  "compilerOptions": {
+    ...
+    "target": "es5",
+    "strict": false,
+    "noImplicitThis": true,
+    "sourceMap": true,
+    ...
+  }
+}
+```
+
 This will generate a `tsconfig.json` file in root directory
 
 **webpack.config.js**
