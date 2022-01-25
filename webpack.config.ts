@@ -60,15 +60,15 @@ const config: Configuration = {
         }),
         new CleanWebpackPlugin(),
     ],
-    devServer: {
-        port: 4200,
-        // ! to enable Reload of page when static files are changed
-        static: ['./src'],
-    },
     optimization: {
         splitChunks: {
             chunks: 'all',
         },
+    },
+    devServer: {
+        port: 4200,
+        // ! to enable Reload of page when static files are changed
+        static: ['./src'],
     },
 };
 
