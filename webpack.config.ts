@@ -1,14 +1,18 @@
-const path = require('path');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+import path from 'path';
+import { Configuration } from 'webpack';
+// in case you run into any typescript error when configuring `devServer`
+import 'webpack-dev-server';
+
+import { CleanWebpackPlugin } from 'clean-webpack-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 // ! to enable Reload of page when static files are changed
 // * provide a static path config for webpack-dev-server! (see package.json)
 // webpack-dev-server --static ./src/app,
 // * or provide in devServer.static = []
 
-module.exports = {
+const config: Configuration = {
     // ? The following 3 commented-lines are explicitly included in package.json scripts
     // devtool: 'eval-source-map', // DEBUGGING for development -- also enable sourceMap: true in tsconfig.json
     // devtool: 'source-map', // DEBUGGING for production  -- also enable sourceMap: true in tsconfig.json
@@ -67,3 +71,5 @@ module.exports = {
         },
     },
 };
+
+export default config;

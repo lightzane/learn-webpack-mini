@@ -111,6 +111,33 @@ module.exports = {
 };
 ```
 
+### Changing to Typescript Webpack Config
+
+The following package is needed as a runtime loader to help Webpack read/load webpack.config`.ts` file
+
+```
+npm i ts-node -D
+```
+
+**webpack.config.ts**
+
+```ts
+import path from 'path';
+import { Configuration } from 'webpack';
+// in case you run into any typescript error when configuring `devServer`
+import 'webpack-dev-server';
+
+import { CleanWebpackPlugin } from 'clean-webpack-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+
+const config: Configuration = {
+    // ...
+};
+
+export default config;
+```
+
 |              Dependency | Description                                                                                      |
 | ----------------------: | :----------------------------------------------------------------------------------------------- |
 |              typescript | Core dependency when writing `.ts` files                                                         |
