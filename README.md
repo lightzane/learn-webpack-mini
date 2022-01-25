@@ -57,6 +57,8 @@ This will generate a `tsconfig.json` file in root directory
 
 **webpack.config.js**
 
+Create a `webpack.config.js` file in root directory
+
 ```js
 const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -315,6 +317,56 @@ const config: Configuration = {
 };
 
 export default config;
+```
+
+### Code your Main entry point
+
+**src/main.ts**
+
+```ts
+alert('Hello HTML!');
+```
+
+### Create HTML
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Webpack Mini Demo</title>
+    </head>
+    <body>
+        <h1>Hello Webpack</h1>
+    </body>
+</html>
+```
+
+### (Optional) Create your style
+
+If you don't provide `src/style.scss`, remember to delete this from `webpack.config.ts` otherwise it will throw an error as it does not find the file.
+
+**src/style.scss**
+
+```scss
+$font: Arial;
+
+h1 {
+    font-family: $font;
+    color: #2ecc71;
+}
+```
+
+### Run your App
+
+```
+// Development
+npm start
+
+// Production
+npm run build
 ```
 
 ## Dependencies
