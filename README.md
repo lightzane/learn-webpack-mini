@@ -30,7 +30,7 @@ npm i vue-loader vue-template-compiler -D
 
 ### Modify Typescript Configuration
 
-Apply the following `tsconfig.json`
+Modify _some_ properties in `tsconfig.json`
 
 ```diff
 {
