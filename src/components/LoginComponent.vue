@@ -25,8 +25,5 @@ export default Vue.extend({
             password: '',
         };
     },
-    computed: {
-        print(): void {},
-    },
 });
 </script>

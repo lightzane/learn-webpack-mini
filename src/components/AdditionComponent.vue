@@ -18,7 +18,7 @@ export default Vue.extend({
     data: () => {
         return { x: '', y: '', sum: undefined };
     },
-    computed: {
+    methods: {
         add(): void {
             this.sum = +this.x + +this.y;
         },
