@@ -1,38 +1,20 @@
 # learn-webpack-mini
 
-![](https://img.shields.io/badge/webpack-5.67.0-lightblue) ![](https://img.shields.io/badge/vue-2.16.14-34495e)
+![](https://img.shields.io/badge/webpack-5.67.0-lightblue) ![](https://img.shields.io/badge/vue-2.16.14-2ecc71)
 
-**Vue** from scratch with Webpack using Typescript as entry point.
+[Vue](https://v2.vuejs.org/) from scratch with Webpack using Typescript as entry point.
 
-This project merely has LESS **Plugins** and **configurations** in `webpack.config.js` for quick mini demo of webpack
+This project merely has LESS **Plugins** and **configurations** in `webpack.config.ts` for quick mini demo of webpack
+
+# Beginner
+
+You must already have familiarized yourself first or finished the [Webpack Basics](https://github.com/lightzane/learn-webpack-mini/tree/main) as this is a continuation/addition from that project.
 
 ### Vscode Extension
 
-Install [Vetur](https://marketplace.visualstudio.com/items?itemName=octref.vetur) in vscode. This will help edit `.vue` files
+Install [Vetur](https://marketplace.visualstudio.com/items?itemName=octref.vetur) in vscode. This will help edit `.vue` files.
 
-### Webpack Installation
-
-```
-npm i webpack webpack-cli webpack-dev-server -D
-```
-
-### Webpack Loaders
-
-```
-npm i ts-loader sass-loader css-loader -D
-```
-
-### Webpack Plugins
-
-```
-npm i html-webpack-plugin clean-webpack-plugin mini-css-extract-plugin -D
-```
-
-### Other Dependencies
-
-```
-npm i typescript sass -D
-```
+It is recommended if you are new (or not) to [Vue](https://v2.vuejs.org/).
 
 ### Vue Installation
 
@@ -46,48 +28,104 @@ npm i vue@2 vue-router@2
 npm i vue-loader vue-template-compiler -D
 ```
 
-**package.json**
+### Modify Typescript Configuration
+
+Apply the following `tsconfig.json`
 
 ```json
 {
-    "scripts": {
-        "start": "webpack-dev-server --mode=development --devtool=eval-source-map",
-        "build": "webpack --mode=production"
-    }
+  "compilerOptions": {
+    ...
+    "target": "es5",
+    "strict": false,
+    "noImplicitThis": true,
+    "sourceMap": true,
+    ...
+  }
 }
 ```
 
+### Create Declaration file
+
+In root directory, create the following file
+
 **index.d.ts**
 
-```typescript
+```ts
 // below are used to satisfy typescript compiler
 
-declare module '*.vue'; // to import *.vue files
-declare module '@/*'; // to import path resolved from alias (see webpack.config.ts - resolve.alias)
+declare module '*.vue'; // to fix compile errors when importing *.vue files
+declare module '@/*'; // to fix compile errosr when importing path resolved from alias (see webpack.config.ts - resolve.alias)
 ```
 
-**webpack.config.json**
+**webpack.config.ts**
 
-```typescript
-const path = require('path');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+Update your webpack configurations
 
-// ! to enable Reload of page when static files are changed
-// * provide a static path config for webpack-dev-server! (see package.json)
-// webpack-dev-server --static ./src/app,
-// * or provide in devServer.static = []
+```diff
+...
++import { VueLoaderPlugin } from 'vue-loader';
 
-module.exports = {
-    // ? The following 3 commented-lines are explicitly included in package.json scripts
-    // devtool: 'eval-source-map', // DEBUGGING for development -- also enable sourceMap: true in tsconfig.json
-    // devtool: 'source-map', // DEBUGGING for production  -- also enable sourceMap: true in tsconfig.json
-    // mode: 'production', // 'development' | 'production'
+const config: Configuration = {
+-   entry: ['./src/main.ts', './src/style.scss'],
++   entry: './src/main.ts',
+    ...
+    resolve: {
+         extensions: ['.ts', '.js'],
++        alias: {
++            '@': path.resolve(__dirname, 'src'),
++        },
+    },
+    module: {
+        rules: [
+             {
+                 test: /\.ts$/,
+-                use: 'ts-loader',
++                loader: 'ts-loader',
+                 exclude: /node_modules/,
++                options: {
++                    appendTsSuffixTo: [/\.vue$/],
++                },
+             },
++            {
++                test: /\.vue$/,
++                use: 'vue-loader',
++            },
+            ...
+        ]
+    },
+    plugins: [
+        ...
++        new VueLoaderPlugin() as any,
+    ],
+};
+```
+
+### All together
+
+**webpack.config.ts**
+
+```ts
+import path from 'path';
+import { Configuration } from 'webpack';
+import 'webpack-dev-server';
+
+import { CleanWebpackPlugin } from 'clean-webpack-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import { VueLoaderPlugin } from 'vue-loader';
+
+const config: Configuration = {
     entry: './src/main.ts',
     output: {
-        filename: '[name]-[contenthash].js',
-        path: path.resolve(__dirname, 'dist'),
+        filename: 'js/[name]-[contenthash].js',
+        path: path.resolve(__dirname, 'dist')
+    },
+    resolve: {
+        extensions: ['.ts', '.js'],
+        alias: {
+            '@': path.resolve(__dirname, 'src'), // must also declare in index.d.ts
+        },
     },
     module: {
         rules: [
@@ -106,88 +144,282 @@ module.exports = {
             {
                 test: /\.s[ac]ss$/,
                 use: [
-                    // Extracts CSS and Creates `style` nodes from JS strings
-                    MiniCssExtractPlugin.loader,
-                    // Translate CSS into CommonJS
+                    loader: MiniCssExtractPlugin.loader,
                     'css-loader',
-                    // Compiles Sass into CSS
                     'sass-loader',
                 ],
             },
         ],
     },
-    // ! REQUIRED if main.ts imports from other files (to prevent MODULE_NOT_FOUND error)
-    resolve: {
-        extensions: ['.ts', '.js'],
-        alias: {
-            '@': path.resolve(__dirname, 'src'),
-        },
-    },
     plugins: [
-        new VueLoaderPlugin(),
-        // to output a new index.html with injected dependencies (i.e. <scripts>)
+        // ! add "as any" to this plugin in order to prevent TS compiler error:
+        // Property 'apply' is missing in type 'VueLoaderPlugin' but required in type 'WebpackPluginInstance'
+        new VueLoaderPlugin() as any,
         new HtmlWebpackPlugin({
             template: './src/index.html',
         }),
         new MiniCssExtractPlugin({
-            filename: '[name]-[contenthash].css',
+            filename: 'css/[name]-[contenthash].css',
         }),
         new CleanWebpackPlugin(),
     ],
-    devServer: {
-        port: 4200,
-        // ! to enable Reload of page when static files are changed
-        static: ['./src'],
-    },
     optimization: {
         splitChunks: {
             chunks: 'all',
         },
     },
+    devServer: {
+        port: 4200,
+        static: ['./src'],
+    }
 };
-```
 
-### Changing to Typescript Webpack Config
-
-The following package is needed as a runtime loader to help Webpack read/load webpack.config as a `.ts` file
-
-```
-npm i ts-node -D
-```
-
-**webpack.config.ts**
-
-```ts
-import path from 'path';
-import { Configuration } from 'webpack';
-// in case you run into any typescript error when configuring `devServer`
-import 'webpack-dev-server';
-
-import { CleanWebpackPlugin } from 'clean-webpack-plugin';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import { VueLoaderPlugin } from 'vue-loader';
-
-const config: Configuration = {
-    // ...
-    plugins: [
-        // add "as any" to this plugin in order to prevent TS compiler error:
-        // Property 'apply' is missing in type 'VueLoaderPlugin' but required in type 'WebpackPluginInstance'
-        new VueLoaderPlugin() as any,
-    ],
-};
 export default config;
 ```
 
-|              Dependency | Description                                                                                      |
-| ----------------------: | :----------------------------------------------------------------------------------------------- |
-|              typescript | Core dependency when writing `.ts` files                                                         |
-|               ts-loader | Compiles `.ts` files to `.js`                                                                    |
-|                    sass | Core dependency when writing `.scss` or `.sass` files                                            |
-|             sass-loader | Compiles `.scss` or `.sass` to `CSS`                                                             |
-|              css-loader | Compiles `CSS` to CommonJS                                                                       |
-| mini-css-extract-plugin | Extracts `CSS` from CommonJS and injects `<style>` nodes to the HTML template                    |
-|     html-webpack-plugin | Generates the given HTML template and injects the `entry` point specified in `webpack.config.js` |
-|    clean-webpack-plugin | Cleans the `output` directory specified in `webpack.config.js`                                   |
-|                     --- | ---                                                                                              |
-|              vue-loader | Compiles `.vue` files to JS or SCSS (requires `vue-template-compiler`)                           |
+#### Clean Up existing code
+
+You may delete the following files if you came from the `main` branch of this repository.
+
+-   Delete `src/main.ts`
+-   Delete `src/index.html`
+-   Delete `src/style.scss`
+
+### Create HTML
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Vue | Webpack Mini Demo</title>
+    </head>
+    <body>
+        <div id="app"></div>
+    </body>
+</html>
+```
+
+### Create Main Entry Point for Vue
+
+**src/main.ts**
+
+```ts
+import Vue from 'vue';
+import App from './App.vue';
+
+new Vue({
+    render: (h) => h(App),
+}).$mount('#app');
+```
+
+### Create first Vue file
+
+The [Vetur](https://marketplace.visualstudio.com/items?itemName=octref.vetur) extension of vscode will help you create the Vue template with ease.
+
+**src/App.vue**
+
+```vue
+<template>
+    <div>
+        <h1>Vue Webpack from Scratch</h1>
+    </div>
+</template>
+
+<script lang="ts">
+import Vue from 'vue';
+export default Vue.extend({});
+</script>
+
+<style lang="scss">
+* {
+    font-family: Arial;
+}
+</style>
+```
+
+### Try it Out
+
+```
+npm start
+```
+
+### Create Component
+
+**src/components/HelloComponent.vue**
+
+```vue
+<template>
+    <div>
+        <p>Hello {{ name }}!</p>
+        <p>{{ message }}</p>
+
+        <p><input type="text" v-model="message" /></p>
+
+        <button @click="add()">Click Me</button>
+        <p v-if="sum">The sum of 5 + 10 is equal to {{ sum }}</p>
+    </div>
+</template>
+
+<script lang="ts">
+import Vue from 'vue';
+export default Vue.extend({
+    data: () => {
+        return {
+            x: 5,
+            y: 10,
+            sum: 0,
+        };
+    },
+    props: {
+        name: {
+            type: String,
+            required: true,
+        },
+        message: String,
+    },
+    methods: {
+        add(): void {
+            this.sum = this.x + this.y;
+        },
+    },
+});
+</script>
+```
+
+Update `App.vue` to include the component in its view
+
+**src/App.vue**
+
+```diff
+ <template>
+     <div>
+         <h1>Vue Webpack from Scratch</h1>
++        <HelloComponent
++            name="John"
++            message="This is Vuetiful!">
++        </HelloComponent>
+     </div>
+ </template>
+
+ <script lang="ts">
+ import Vue from 'vue';
++import HelloComponent from '@/components/HelloComponent.vue';
+ export default Vue.extend({
++    components: {
++        HelloComponent,
++    },
+ });
+ </script>
+...
+```
+
+### Create Router
+
+**src/router.ts**
+
+```ts
+import Vue from 'vue';
+import Router from 'vue-router';
+
+Vue.use(Router);
+
+export default new Router({
+    routes: [],
+});
+```
+
+Update **src/main.ts**
+
+```diff
+ import Vue from 'vue';
+ import App from './test.vue';
++import router from './router';
+
+ new Vue({
++    router,
+     render: h => h(App)
+ }).$mount('#app');
+```
+
+### Create Views
+
+Create `Home.vue` and `About.vue`
+
+**src/views/Home.vue**
+
+```vue
+<template>
+    <div>
+        <h1>HOME</h1>
+    </div>
+</template>
+```
+
+**src/views/About.vue**
+
+```vue
+<template>
+    <div>
+        <h1>ABOUT</h1>
+    </div>
+</template>
+```
+
+Update **src/router.ts**
+
+```diff
+ import Vue from 'vue';
+ import Router from 'vue-router';
+
+ Vue.use(Router);
+
+ export default new Router({
+     routes: [
++        {
++            path: '/',
++            component: Home
++        },
++        {
++            path: '/about',
++            component: () => import('@/views/About.vue') // lazy-load
++        },
++        {
++            path: '*',
++            component: () => import('@/views/PageNotFound.vue')
++        }
+     ]
+ });
+```
+
+Update `App.vue` to render the views
+
+**src/App.vue**
+
+```diff
+ <template>
+     <div>
+         <h1>Vue Webpack from Scratch</h1>
+         <HelloComponent
+             name="John"
+             message="This is Vuetiful!">
+         </HelloComponent>
++        <router-view></router-view>
++        <router-link to="/" tag="a">Home</router-link>
++        <router-link to="/about" tag="button">About</router-link>
+     </div>
+ </template>
+...
+```
+
+| Dependency | Description                                                            |
+| ---------: | :--------------------------------------------------------------------- |
+| vue-loader | Compiles `.vue` files to JS or SCSS (requires `vue-template-compiler`) |
+
+## Level Up
+
+Learn how to add [Vuetify](https://vuetifyjs.com/en/) in Vue which was created in Webpack from scratch. Material Design framework.
+
+-   [with Vuetify](https://github.com/lightzane/learn-webpack-mini/tree/with-vuetify)

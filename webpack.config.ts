@@ -23,6 +23,13 @@ const config: Configuration = {
         filename: 'js/[name]-[contenthash].js',
         path: path.resolve(__dirname, 'dist')
     },
+    // ! REQUIRED if main.ts imports from other files (to prevent MODULE_NOT_FOUND error)
+    resolve: {
+        extensions: ['.ts', '.js'],
+        alias: {
+            '@': path.resolve(__dirname, 'src'), // must also declare in index.d.ts
+        },
+    },
     module: {
         rules: [
             {
@@ -53,13 +60,6 @@ const config: Configuration = {
             },
         ],
     },
-    // ! REQUIRED if main.ts imports from other files (to prevent MODULE_NOT_FOUND error)
-    resolve: {
-        extensions: ['.ts', '.js'],
-        alias: {
-            '@': path.resolve(__dirname, 'src'), // must also declare in index.d.ts
-        },
-    },
     plugins: [
         // ! add "as any" to this plugin in order to prevent TS compiler error:
         // Property 'apply' is missing in type 'VueLoaderPlugin' but required in type 'WebpackPluginInstance'
@@ -74,15 +74,15 @@ const config: Configuration = {
         }),
         new CleanWebpackPlugin(),
     ],
-    devServer: {
-        port: 4200,
-        // ! to enable Reload of page when static files are changed
-        static: ['./src'],
-    },
     optimization: {
         splitChunks: {
             chunks: 'all',
         },
+    },
+    devServer: {
+        port: 4200,
+        // ! to enable Reload of page when static files are changed
+        static: ['./src'],
     }
 };
 
