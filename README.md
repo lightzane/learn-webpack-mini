@@ -147,6 +147,38 @@ module.exports = {
 };
 ```
 
+### Changing to Typescript Webpack Config
+
+The following package is needed as a runtime loader to help Webpack read/load webpack.config as a `.ts` file
+
+```
+npm i ts-node -D
+```
+
+**webpack.config.ts**
+
+```ts
+import path from 'path';
+import { Configuration } from 'webpack';
+// in case you run into any typescript error when configuring `devServer`
+import 'webpack-dev-server';
+
+import { CleanWebpackPlugin } from 'clean-webpack-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import { VueLoaderPlugin } from 'vue-loader';
+
+const config: Configuration = {
+    // ...
+    plugins: [
+        // add "as any" to this plugin in order to prevent TS compiler error:
+        // Property 'apply' is missing in type 'VueLoaderPlugin' but required in type 'WebpackPluginInstance'
+        new VueLoaderPlugin() as any,
+    ],
+};
+export default config;
+```
+
 |              Dependency | Description                                                                                      |
 | ----------------------: | :----------------------------------------------------------------------------------------------- |
 |              typescript | Core dependency when writing `.ts` files                                                         |

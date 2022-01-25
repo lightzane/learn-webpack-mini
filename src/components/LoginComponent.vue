@@ -20,7 +20,7 @@ import Vue from 'vue';
 export default Vue.extend({
     data: () => {
         return {
-            sampleText: 'Sample interpolation text from vue script',
+            sampleText: 'This text was inserted via Vue interpolation',
             username: '',
             password: '',
         };
