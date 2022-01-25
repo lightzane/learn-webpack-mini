@@ -28,23 +28,6 @@ npm i vue@2 vue-router@2
 npm i vue-loader vue-template-compiler -D
 ```
 
-### Modify Typescript Configuration
-
-Modify _some_ properties in `tsconfig.json`
-
-```diff
-{
-  "compilerOptions": {
-    ...
-    "target": "es5",
-    "strict": false,
-    "noImplicitThis": true,
-    "sourceMap": true,
-    ...
-  }
-}
-```
-
 ### Create Declaration file
 
 In root directory, create the following file
