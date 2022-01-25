@@ -311,6 +311,8 @@ const config: Configuration = {
 export default config;
 ```
 
+## Dependencies
+
 |              Dependency | Description                                                                                      |
 | ----------------------: | :----------------------------------------------------------------------------------------------- |
 |              typescript | Core dependency when writing `.ts` files                                                         |
