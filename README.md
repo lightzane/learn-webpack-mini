@@ -6,6 +6,12 @@ Webpack using Typescript as entry point.
 
 This project merely has LESS **Plugins** and **configurations** in `webpack.config.js` for quick mini demo of webpack
 
+### In your blank folder
+
+```
+npm init -y
+```
+
 ### Webpack Installation
 
 ```
