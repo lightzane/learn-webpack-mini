@@ -329,6 +329,8 @@ alert('Hello HTML!');
 
 ### Create HTML
 
+**src/index.html**
+
 ```html
 <!DOCTYPE html>
 <html lang="en">
