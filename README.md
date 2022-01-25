@@ -32,7 +32,7 @@ npm i vue-loader vue-template-compiler -D
 
 Apply the following `tsconfig.json`
 
-```json
+```diff
 {
   "compilerOptions": {
     ...
