@@ -22,6 +22,10 @@ const config: Configuration = {
         filename: '[name]-[contenthash].js',
         path: path.resolve(__dirname, 'dist'),
     },
+    // ! REQUIRED if main.ts imports from other files (to prevent MODULE_NOT_FOUND error)
+    resolve: {
+        extensions: ['.ts', '.js'],
+    },
     module: {
         rules: [
             {
@@ -44,10 +48,6 @@ const config: Configuration = {
                 ],
             },
         ],
-    },
-    // ! REQUIRED if main.ts imports from other files (to prevent MODULE_NOT_FOUND error)
-    resolve: {
-        extensions: ['.ts', '.js'],
     },
     plugins: [
         // to output a new index.html with injected dependencies (i.e. <scripts>)
