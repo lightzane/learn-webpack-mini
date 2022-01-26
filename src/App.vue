@@ -81,7 +81,7 @@
                         <v-img
                             class="white--text align-end"
                             height="200px"
-                            src="https://assets.nintendo.com/image/upload/c_pad,f_auto,h_613,q_auto,w_1089/ncom/en_US/games/switch/s/sky-children-of-the-light-switch/hero?v=2021120306"
+                            src="https://play-lh.googleusercontent.com/ZdNBH-p5_YSsRciPAsWpmR7JdNoCTsi6Ad5ygzuqj3PzOIyyMF6P_JlmpJVUVvbfkg"
                         >
                             <v-card-title> Title everything </v-card-title>
                         </v-img>
