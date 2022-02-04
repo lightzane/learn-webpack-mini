@@ -3,7 +3,7 @@ import Vuetify, { UserVuetifyPreset } from 'vuetify';
 import { VApp, VMain, VContainer, VBtn, VTextField, VAppBar, VAppBarTitle, /*VToolbar, VToolbarTitle, */ VAppBarNavIcon, VSpacer, VIcon, VNavigationDrawer, VList, VListItem, VListItemContent, VListItemTitle, VListItemSubtitle, VDivider, VListItemIcon, VCard, VCardTitle, VCardSubtitle, VCardText, VCardActions, VImg } from 'vuetify/lib';
 
 Vue.use(Vuetify, {
-    components: {
+    components: { // this also works: Vue.use(Vuetify, { VApp, VMain })
         VApp,
         VMain,
         VContainer,

@@ -115,7 +115,7 @@ export default Vue.extend({
 
         switch (bgTheme) {
             case 'sky': {
-                bgNavigationDrawer = 'https://wallpaperaccess.com/full/5017083.jpg';
+                bgNavigationDrawer = 'https://as1.ftcdn.net/v2/jpg/02/70/92/68/1000_F_270926864_i2D8igkbTP5EF2Fl9tU8Kcopa8EcZvC7.jpg';
                 break;
             }
             case 'none': {
