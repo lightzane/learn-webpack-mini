@@ -7,6 +7,10 @@
     "strict": false,                            
     "noImplicitThis": true,                          
     "sourceMap": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"]
+    }
   }
 }

@@ -38,7 +38,6 @@ In root directory, create the following file
 // below are used to satisfy typescript compiler
 
 declare module '*.vue'; // to fix compile errors when importing *.vue files
-declare module '@/*'; // to fix compile errosr when importing path resolved from alias (see webpack.config.ts - resolve.alias)
 ```
 
 **webpack.config.ts**
@@ -83,6 +82,31 @@ const config: Configuration = {
     ],
 };
 ```
+
+> The `use` property cannot be used together with the `options` property that we added. Therefore, we replaced `use` with `loader` instead.
+
+### Update tsconfig.json
+
+Since we added an alias path `@`.
+
+We need to tell this to Typescript by specifying `baseUrl` and adding `paths`.
+
+**tsconfig.json**
+
+```diff
+{
+  "compilerOptions": {
+    ...
++   "baseUrl": "./",
++   "paths": {
++     "@/*": ["src/*"]
++   }
+  }
+}
+
+```
+
+> This will allow typescript file(s) / vscode to detect and provide suggestions or autocomplete the specified path when doing `import ... from '@/...'`
 
 ### All together
 
