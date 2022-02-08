@@ -214,3 +214,7 @@ npm start
 // Production
 npm run build
 ```
+
+## References
+- https://www.taniarascia.com/getting-started-with-react/
+- https://reactjs.org/docs/getting-started.html
