@@ -302,7 +302,7 @@ const config: Configuration = {
                 test: /\.s[ac]ss$/,
                 use: [
                     // Extracts CSS and Creates `style` nodes from JS strings
-                    loader: MiniCssExtractPlugin.loader,
+                    MiniCssExtractPlugin.loader,
                     // Translate CSS into CommonJS
                     'css-loader',
                     // Compiles Sass into CSS
@@ -403,6 +403,7 @@ npm run build
 
 ## Level Up
 
-Learn to add Vue in webpack from scratch
+Learn to add Vue or React in webpack from scratch
 
 -   [Vue from Scratch](https://github.com/lightzane/learn-webpack-mini/tree/vue-from-scratch)
+-   [React from Scratch](https://github.com/lightzane/learn-webpack-mini/tree/react-from-scratch)
