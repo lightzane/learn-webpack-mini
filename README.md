@@ -119,6 +119,7 @@ export default config;
 You may delete the following files if you came from the `main` branch of this repository
 - Delete `src/main.ts` 
 - Delete `src/index.html`
+- Delete `src/app` (folder)
 
 ### Create HTML
 ```html
