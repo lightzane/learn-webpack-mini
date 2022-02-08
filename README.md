@@ -151,7 +151,7 @@ const config: Configuration = {
             {
                 test: /\.s[ac]ss$/,
                 use: [
-                    loader: MiniCssExtractPlugin.loader,
+                    MiniCssExtractPlugin.loader,
                     'css-loader',
                     'sass-loader',
                 ],
