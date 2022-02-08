@@ -17,11 +17,16 @@ class App extends Component<AppProps, AppState> {
         };
     }
 
+    exampleClick(): void {
+        alert('this.state.name = ' + this.state.name);
+    }
+
     render() {
         return (
             <div>
                 <Hello name={this.state.name}></Hello>
                 <p>Start editing to see some magic happen :)</p>
+                <button className='btn btn-primary' onClick={() => this.exampleClick()}>Button</button>
             </div>
         );
     }

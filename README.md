@@ -22,6 +22,26 @@ npm i react react-dom
 npm i @types/react @types/react-dom -D
 ```
 
+### Update Typescript Configuration
+
+Add `jsx` and set to `react`
+
+**tsconfig.json**
+```diff
+{
+  "compilerOptions": {
++   "jsx": "react",
+    
+    ...
+
+  }
+}
+```
+
+**Notice**: If we did not set `"jsx": "react"`, then we will get the following errors when writing JSX or importing JSX.
+- `Cannot use JSX unless the '--jsx' flag is provided.ts(17004)`
+- `...but '--jsx' is not set.ts(6142)`
+
 ### Update Webpack Configuration
 
 **webpack.config.ts**
