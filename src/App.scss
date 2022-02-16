@@ -1,0 +1,17 @@
+html,
+body {
+    height: 100%;
+}
+body {
+    margin: 0;
+    font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+// prevent zoom-in mobile when entering input fields
+@media screen and (max-width: 767px) {
+    input,
+    textarea,
+    select {
+        font-size: 16px !important;
+    }
+}
